@@ -8,6 +8,7 @@ module.exports = {
             if(err){
                 throw 'Error'
             }else{
+                console.log('called db')
                 resp.json(categories);
             }
         })
