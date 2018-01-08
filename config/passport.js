@@ -15,7 +15,7 @@ passport.use(new LocalStrategy(
                 return done(null, false, {message : 'unknown user'})
             }
 
-            user.comparePassword(passport, user.password, function (err, isMatch) {
+            user.comparePassword(passport, function (err, isMatch) {
 
                 if(err) throw err;
 

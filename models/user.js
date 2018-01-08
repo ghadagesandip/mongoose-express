@@ -59,17 +59,13 @@ UserSchema.methods.generateHash = function (password,cb) {
 }
 
 
-UserSchema.methods.validPassword = function (password) {
-    return true;
-}
 
 
+UserSchema.methods.comparePassword = function (candidatePassword, cb  ) {
 
-UserSchema.methods.comparePassword = function (candidatePassword, hash, cb  ) {
-
-    bcrypt.compare(candidatePassword, hash, function (err, isMatch) {
+    bcrypt.compare(candidatePassword, this.password, function (err, isMatch) {
         if(err){
-            cb(err, null)
+            cb(err)
         }else{
             console.log('done login')
             cb(null, isMatch);
