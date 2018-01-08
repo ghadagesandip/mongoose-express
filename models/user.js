@@ -3,10 +3,48 @@ var Schema = mongoose.Schema;
 var bcrypt = require('bcryptjs');
 
 var UserSchema = new Schema({
-    email : 'String',
-    password :'String',
-    name : String,
-    gender : String
+    email : {
+        type : String,
+        unique : true,
+        lowercase : true,
+        required  : true
+    },
+    password :{
+        type : String,
+        required  : true
+    },
+    name : {
+        type : String,
+        required  : true
+    },
+    gender : {
+        type : String,
+        required  : true,
+        enum : ['Male','Female']
+    }   
+});
+
+
+
+
+UserSchema.pre('save', function (next) {
+    var user = this;
+    if(this.isModified('password') || this.isNew){
+        bcrypt.genSalt(10, function (err, salt) {
+           if(err){
+               return next(err);
+           }
+            bcrypt.hash(user.password, salt, function (error, hash) {
+                if(err){
+                    return next(err)
+                }
+                user.password = hash;
+                next();
+            })
+        })
+    }else{
+        return next();
+    }
 })
 
 

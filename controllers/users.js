@@ -4,14 +4,12 @@ module.exports = {
 
     add : function (req, resp) {
         var user = new User(req.body);
-        user.generateHash(user.password, function (err, hashedPassword) {
-            user.password = hashedPassword;
-
-            user.save( function (err, data) {
-                console.log(err, data)
-            })
-
-        });
-
+        user.save( function (err, data) {
+            if(err){
+                resp.status(400).send({message:'error occurred while saving data', error: err})
+            }else{
+                resp.json(data)
+            }
+        })
     }
 }
