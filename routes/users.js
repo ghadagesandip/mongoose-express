@@ -2,6 +2,8 @@ var express = require('express');
 var router = express.Router();
 var passport = require('passport');
 var UsersCtrl = require('../controllers/users');
+var UserValidator = require('../middlewares/users.validation');
+
 
 var jwt = require('jsonwebtoken');
 
@@ -24,10 +26,11 @@ router.get('/', function(req, res, next) {
 //       res.json(req.user);
 //     });
 
-router.post('/login', UsersCtrl.login)
+router.post('/login', UserValidator.login, UsersCtrl.login)
 
 
-router.post('/register',UsersCtrl.add);
+router.post('/register',UserValidator.register, UsersCtrl.add);
+
 
 router.get('/dashboard', passport.authenticate('jwt', {session: false}), UsersCtrl.dashboard)
 

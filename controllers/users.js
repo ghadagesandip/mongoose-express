@@ -2,9 +2,11 @@ var User = require('../models/user');
 var config = require('../config/main');
 var jwt = require('jsonwebtoken');
 
+
 module.exports = {
 
     login : function (req, resp) {
+
         User.findOne({
             email : req.body.email
         }, function (err, user) {
@@ -18,8 +20,8 @@ module.exports = {
 
                     if(iMatch && !err){
                         var token = jwt.sign(user.toJSON(),config.secret,{
-                            expiresIn : 604800 //in seconds
-                        } )
+                            expiresIn : '1h' //in seconds
+                        })
 
                         resp.json({success : true, message: 'done', token : token})
                     }else{
@@ -42,7 +44,8 @@ module.exports = {
     },
 
     dashboard : function (req, resp) {
-        resp.send('it worked user id'+ req.user)
+        resp.send('it worked user id'+ req.user._id)
+
 
     }
 }
