@@ -63,11 +63,12 @@ UserSchema.methods.generateHash = function (password,cb) {
 
 UserSchema.methods.comparePassword = function (candidatePassword, cb  ) {
 
+    console.log('this.password', this.password)
     bcrypt.compare(candidatePassword, this.password, function (err, isMatch) {
         if(err){
-            cb(err)
+            cb(err, null)
         }else{
-            console.log('done login')
+            console.log('done login', isMatch)
             cb(null, isMatch);
         }
     })
